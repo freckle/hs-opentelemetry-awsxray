@@ -15,22 +15,14 @@ AWS X-Ray][xray].
 [sdk]: https://hackage.haskell.org/package/hs-opentelemetry-sdk
 [xray]: https://docs.aws.amazon.com/xray/latest/devguide/xray-api-sendingdata.html#xray-api-traceids
 
-This is mostly a port of the [equivalent][java1] [Java][java2] and [Go][]
-projects, and takes inspiration from the existing [Datadog][] modules.
-
-[java1]: https://github.com/open-telemetry/opentelemetry-java-contrib/blob/main/aws-xray/src/main/java/io/opentelemetry/contrib/awsxray/AwsXrayIdGenerator.java
-[java2]: https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/aws-xray-propagator
-[go]: https://aws.amazon.com/blogs/opensource/go-support-for-aws-x-ray-now-available-in-aws-distro-for-opentelemetry/
-[datadog]: https://github.com/iand675/hs-opentelemetry/tree/main/propagators/datadog
-
 ## Usage
 
-The current API exposed by `hs-opentelemetry-sdk` lacks a way to modify the
-`TracerProviderOptions` as part of initialization. One's only recourse is to
-re-implement the internals of `initializeTracerProvider` so you can do so.
+The API currently exposed by the `hs-opentelemetry-sdk` package lacks a
+convenient way to modify the `TracerProviderOptions` (to tell it to use our
+generator/propagator) as part of initialization. You basically have to
+re-implement the internals of `initializeTracerProvider` to do so.
 
-This has been encapsulated in a module of this library that really shouldn't be
-in this library:
+This has been encapsulated in a module of this library for convenience:
 
 ```hs
 import OpenTelemetry.AWSXRay
