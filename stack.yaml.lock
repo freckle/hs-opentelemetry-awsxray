@@ -12,48 +12,6 @@ packages:
   original:
     hackage: hs-opentelemetry-api-0.0.3.6
 - completed:
-    hackage: hs-opentelemetry-exporter-otlp-0.0.1.4@sha256:25fcf5c2173f1dd3fe4f288f3232da70e9d8398363430932b7e2a278f78c3765,2150
-    pantry-tree:
-      sha256: 6d2ae7125938614e10d01b317d10bfd4575bb62889360c4476dda2b904766cda
-      size: 400
-  original:
-    hackage: hs-opentelemetry-exporter-otlp-0.0.1.4
-- completed:
-    hackage: hs-opentelemetry-instrumentation-persistent-0.0.1.0@sha256:5963e5bf98ccf73543955ebd523c2a4776f7e6a2edf0feabbc44664153662caf,1669
-    pantry-tree:
-      sha256: 0cf9da228de66c804c8f945cc90301aa76b85d872011afb0bcaf02569c7b0903
-      size: 424
-  original:
-    hackage: hs-opentelemetry-instrumentation-persistent-0.0.1.0
-- completed:
-    hackage: hs-opentelemetry-instrumentation-wai-0.0.1.3@sha256:417c714052ee94b8b6a7f2b303ee92908c232f6d44a1a1c6232acf17434be753,1767
-    pantry-tree:
-      sha256: c1fa4fee66d3cb299276e2a32d1d027ac26ab9a354665e7bc95f6e163922194d
-      size: 411
-  original:
-    hackage: hs-opentelemetry-instrumentation-wai-0.0.1.3
-- completed:
-    hackage: hs-opentelemetry-instrumentation-yesod-0.0.1.3@sha256:e6e6923e3d320aba4d84997a41c628507cb754e4370b1fcf727b8b337908769c,1913
-    pantry-tree:
-      sha256: dcb06cc670aec9056905a9ae5cb77391183cd12c886dcf1db778818ba65fd79d
-      size: 415
-  original:
-    hackage: hs-opentelemetry-instrumentation-yesod-0.0.1.3
-- completed:
-    hackage: hs-opentelemetry-otlp-0.0.1.0@sha256:88bb6b68f172a336f78018b0823f47363fb7408eb19f7301489f81ad4d5c0f33,2307
-    pantry-tree:
-      sha256: e56292fc693805babed3c7ba7fc54e59d2e9adbc38de6bcc659009e8b10b9a1b
-      size: 2252
-  original:
-    hackage: hs-opentelemetry-otlp-0.0.1.0
-- completed:
-    hackage: hs-opentelemetry-propagator-w3c-0.0.1.2@sha256:ba1e33ff73bec76ec53b049b0cb3d1a65a6849a60c0da08bbef308f0edc241d1,1751
-    pantry-tree:
-      sha256: 3f3a81317fe511bf11191d6ea186d7c98c7fd794b32cc358606ee681637b2a0e
-      size: 496
-  original:
-    hackage: hs-opentelemetry-propagator-w3c-0.0.1.2
-- completed:
     hackage: hs-opentelemetry-sdk-0.0.3.4@sha256:b33cb9e705ea3c591df324976d47ae2b11087af6a0533221840cec2a929db331,3638
     pantry-tree:
       sha256: 7445b1dbd5c88677567712bb9cc4e2caa9ef3923662a2afcbad959c22c9b295e
@@ -68,6 +26,27 @@ packages:
   original:
     hackage: thread-utils-context-0.2.0.0
 - completed:
+    hackage: hs-opentelemetry-exporter-otlp-0.0.1.4@sha256:25fcf5c2173f1dd3fe4f288f3232da70e9d8398363430932b7e2a278f78c3765,2150
+    pantry-tree:
+      sha256: 6d2ae7125938614e10d01b317d10bfd4575bb62889360c4476dda2b904766cda
+      size: 400
+  original:
+    hackage: hs-opentelemetry-exporter-otlp-0.0.1.4
+- completed:
+    hackage: hs-opentelemetry-propagator-w3c-0.0.1.2@sha256:ba1e33ff73bec76ec53b049b0cb3d1a65a6849a60c0da08bbef308f0edc241d1,1751
+    pantry-tree:
+      sha256: 3f3a81317fe511bf11191d6ea186d7c98c7fd794b32cc358606ee681637b2a0e
+      size: 496
+  original:
+    hackage: hs-opentelemetry-propagator-w3c-0.0.1.2
+- completed:
+    hackage: hs-opentelemetry-otlp-0.0.1.0@sha256:88bb6b68f172a336f78018b0823f47363fb7408eb19f7301489f81ad4d5c0f33,2307
+    pantry-tree:
+      sha256: e56292fc693805babed3c7ba7fc54e59d2e9adbc38de6bcc659009e8b10b9a1b
+      size: 2252
+  original:
+    hackage: hs-opentelemetry-otlp-0.0.1.0
+- completed:
     hackage: thread-utils-finalizers-0.1.0.0@sha256:a8435240bfc0ae96c94704d2986699a11a395c496f9a7f2e5f5d729a0b967549,1381
     pantry-tree:
       sha256: 7f708d158d5d0e32ffe77f6375a792ceb6f92e4d8dd8b32fc69e7de962e7e518
@@ -76,7 +55,7 @@ packages:
     hackage: thread-utils-finalizers-0.1.0.0
 snapshots:
 - completed:
-    sha256: 17870c63f8041ac17a38096124abeb953cb14d84bfc96deb88f9b24daa97b347
-    size: 649332
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/10.yaml
-  original: lts-20.10
+    sha256: af5d667f6096e535b9c725a72cffe0f6c060e0568d9f9eeda04caee70d0d9d2d
+    size: 649133
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/12.yaml
+  original: lts-20.12
