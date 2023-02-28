@@ -59,6 +59,14 @@ default-extensions:
 
 library:
   source-dirs: library
+  dependencies:
+    - bytestring
+    - hs-opentelemetry-api
+    - hs-opentelemetry-sdk
+    - http-types
+    - memory
+    - random
+    - time
 
 tests:
   spec:
