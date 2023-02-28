@@ -23,7 +23,7 @@ ghc-options:
   - -Wno-safe
 
 when:
-  - condition: "impl(ghc >= 9.0)"
+  - condition: "impl(ghc >= 9.2)"
     ghc-options:
       - -Wno-missing-kind-signatures
   - condition: "impl(ghc >= 8.10)"
