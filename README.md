@@ -51,5 +51,3 @@ This example uses lens, but you certainly don't have to.
 - https://aws.amazon.com/blogs/opensource/migrating-x-ray-tracing-to-aws-distro-for-opentelemetry/
 
 [CHANGELOG](./CHANGELOG.md) | [LICENSE](./LICENSE)
-
-hacktoberfest: https://hacktoberfest.digitalocean.com/
