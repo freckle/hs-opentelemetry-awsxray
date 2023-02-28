@@ -69,10 +69,12 @@ library:
     - hs-opentelemetry-sdk
     - http-types
     - memory
+    - microlens
     - random >= 1.2.1 # globalStdGen
     - text
     - time
     - unliftio
+    - unliftio-core
     - unordered-containers
 
 tests:
