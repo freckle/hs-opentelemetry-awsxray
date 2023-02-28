@@ -69,7 +69,7 @@ library:
     - hs-opentelemetry-sdk
     - http-types
     - memory
-    - random
+    - random >= 1.2.1 # globalStdGen
     - text
     - time
     - unliftio
