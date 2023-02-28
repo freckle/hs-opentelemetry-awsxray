@@ -1,51 +1,33 @@
 module OpenTelemetry.AWSXRay.Propagator
   ( awsXRayContextPropagator
+  , awsXRayContextPropagatorOnError
   ) where
 
 import Prelude
 
 import Control.Error.Util (note)
-import Control.Monad (unless)
-import Network.HTTP.Types.Header
-  (HeaderName, RequestHeaders, ResponseHeaders, hUserAgent)
+import Network.HTTP.Types.Header (HeaderName, RequestHeaders, ResponseHeaders)
 import OpenTelemetry.AWSXRay.TraceInfo
 import OpenTelemetry.Context
   (Context, insertBaggage, insertSpan, lookupBaggage, lookupSpan)
 import OpenTelemetry.Propagator
 import OpenTelemetry.Trace.Core (getSpanContext, wrapSpanContext)
-import System.IO (hPutStrLn, stderr)
 
 awsXRayContextPropagator :: Propagator Context RequestHeaders ResponseHeaders
-awsXRayContextPropagator = awsXRayContextPropagator' $ \hs err ->
-  -- Skip logging this on health-check requests
-  unless (lookup hUserAgent hs == Just "ELB-HealthChecker/2.0")
-    $ hPutStrLn stderr
-    $ "[awsXRayContextPropagator] Invalid "
-    <> show hAmznTraceId
-    <> ": "
-    <> err
-    <> ", Request Headers: "
-    <> show hs
+awsXRayContextPropagator = awsXRayContextPropagatorOnError $ \_ _ -> pure ()
 
-awsXRayContextPropagator'
+awsXRayContextPropagatorOnError
   :: (RequestHeaders -> String -> IO ())
-  -- ^ Called when the extractor fails to parse X-Amzn-TraceId header
+  -- ^ Called on failure to find or parse an @X-Amzn-TraceId@ header
   -> Propagator Context RequestHeaders ResponseHeaders
-awsXRayContextPropagator' onErr = Propagator
+awsXRayContextPropagatorOnError onErr = Propagator
   { propagatorNames = ["awsxray trace context"]
   , extractor = \hs c -> do
-    let
-      eInfo = do
-        h <- note "Header not found" $ lookup hAmznTraceId hs
-        fromXRayHeader h
-
-    case eInfo of
+    case fromXRayHeader =<< note "not found" (lookup hAmznTraceId hs) of
       Left err -> c <$ onErr hs err
       Right TraceInfo {..} -> do
-        pure
-          . maybe id insertBaggage baggage
-          . insertSpan (wrapSpanContext spanContext)
-          $ c
+        let wrapped = wrapSpanContext spanContext
+        pure $ maybe id insertBaggage baggage $ insertSpan wrapped c
   , injector = \c hs -> case lookupSpan c of
     Nothing -> pure hs
     Just sp -> do

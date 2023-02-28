@@ -70,8 +70,10 @@ library:
     - http-types
     - memory
     - random
+    - text
     - time
     - unliftio
+    - unordered-containers
 
 tests:
   spec:
@@ -79,5 +81,8 @@ tests:
     source-dirs: tests
     ghc-options: -threaded -rtsopts "-with-rtsopts=-N"
     dependencies:
-      #- hs-opentelemetry-awsxray
+      - hs-opentelemetry-api
+      - hs-opentelemetry-awsxray
       - hspec
+      - text
+      - unordered-containers

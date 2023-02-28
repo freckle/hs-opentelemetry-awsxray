@@ -1,5 +1,15 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
+-- |
+--
+-- <https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html#xray-concepts-tracingheader>
+--
+-- Example:
+--
+-- @Root=1-5759e988-bd862e3fe1be46a994272793;Parent=53995c3f42cd8ad8;Sampled=1@
+--
+-- @Root=1-{epoch}-{unique}[;Parent={spanId}][;Sampled={1|0}][;meta=attr...]@
+--
 module OpenTelemetry.AWSXRay.TraceInfo
   ( TraceInfo(..)
   , fromXRayHeader
@@ -8,11 +18,13 @@ module OpenTelemetry.AWSXRay.TraceInfo
 
 import Prelude
 
+import Control.Error.Util (note)
 import Data.Bifunctor (first)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
-import OpenTelemetry.Baggage
+import qualified OpenTelemetry.AWSXRay.Baggage as Baggage
+import OpenTelemetry.Baggage (Baggage)
 import OpenTelemetry.Trace (SpanContext(..))
 import OpenTelemetry.Trace.Core
   (defaultTraceFlags, isSampled, setSampled, unsetSampled)
@@ -32,7 +44,6 @@ data TraceInfo = TraceInfo
   }
   deriving stock Show
 
--- | @Root=1-{epoch}-{unique}[;Parent={spanId}][;Sampled={1|0}][;meta=attr...]@
 fromXRayHeader :: ByteString -> Either String TraceInfo
 fromXRayHeader bs = do
   kv <- bsToKeyValues bs
@@ -40,8 +51,8 @@ fromXRayHeader bs = do
   root <- note "Root not present" $ lookup "Root" kv
   traceId <- case bsSplitOn '-' root of
     ["1", epoch, unique] -> do
-        -- epoch can be "at most" 8 hex and we should zero-pad the
-        -- short values. NB. This relies on hex being 1 char per char
+      -- epoch can be "at most" 8 hex and we should zero-pad the
+      -- short values. NB. This relies on hex being 1 char per char
       let
         epochUnique = bsLeftPad 8 '0' epoch <> unique
         errorPrefix =
@@ -61,9 +72,7 @@ fromXRayHeader bs = do
     traceFlags =
       (if sampled then setSampled else unsetSampled) defaultTraceFlags
 
-    baggage = hush $ decodeBaggageHeader $ bsFromKeyValues $ filter
-      ((`notElem` ["Root", "Parent", "Sampled"]) . fst)
-      kv
+    baggage = Baggage.decode kv
 
   pure $ TraceInfo
     { spanContext = SpanContext
@@ -79,20 +88,14 @@ fromXRayHeader bs = do
 toXRayHeader :: TraceInfo -> ByteString
 toXRayHeader TraceInfo { spanContext, baggage } =
   bsFromKeyValues
-      [ ("Root", "1-" <> epoch <> "-" <> unique)
+    $ [ ("Root", "1-" <> epoch <> "-" <> unique)
       , ("Parent", spanIdBaseEncodedByteString Base16 spanId)
       , ("Sampled", if isSampled traceFlags then "1" else "0")
       ]
-    <> maybe "" ((";" <>) . encodeBaggageHeader) baggage
+    <> maybe [] Baggage.encode baggage
  where
   SpanContext { traceId, spanId, traceFlags } = spanContext
   (epoch, unique) = BS.splitAt 8 $ traceIdBaseEncodedByteString Base16 traceId
-
-hush :: Either e a -> Maybe a
-hush = either (const Nothing) Just
-
-note :: e -> Maybe a -> Either e a
-note e = maybe (Left e) Right
 
 prefix :: String -> Either String a -> Either String a
 prefix p = first (\e -> p <> ": " <> e)
