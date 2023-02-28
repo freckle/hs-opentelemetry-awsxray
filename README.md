@@ -50,4 +50,6 @@ This example uses lens, but you certainly don't have to.
 - https://docs.aws.amazon.com/xray/latest/devguide/xray-services-adot.html
 - https://aws.amazon.com/blogs/opensource/migrating-x-ray-tracing-to-aws-distro-for-opentelemetry/
 
+---
+
 [CHANGELOG](./CHANGELOG.md) | [LICENSE](./LICENSE)
