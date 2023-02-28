@@ -31,8 +31,7 @@ initializeGlobalTracerProvider
   -> m TracerProvider
 initializeGlobalTracerProvider setup = liftIO $ do
   t <- initializeTracerProvider setup
-  setGlobalTracerProvider t
-  pure t
+  t <$ setGlobalTracerProvider t
 
 initializeTracerProvider
   :: MonadIO m

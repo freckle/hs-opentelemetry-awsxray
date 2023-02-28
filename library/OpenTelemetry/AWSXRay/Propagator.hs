@@ -18,7 +18,7 @@ awsXRayContextPropagator = awsXRayContextPropagatorOnError $ \_ _ -> pure ()
 
 awsXRayContextPropagatorOnError
   :: (RequestHeaders -> String -> IO ())
-  -- ^ Called on failure to find or parse an @X-Amzn-TraceId@ header
+  -- ^ Called on failure to find or parse an @X-Amzn-Trace-Id@ header
   -> Propagator Context RequestHeaders ResponseHeaders
 awsXRayContextPropagatorOnError onErr = Propagator
   { propagatorNames = ["awsxray trace context"]
