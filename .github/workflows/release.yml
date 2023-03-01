@@ -6,7 +6,6 @@ on:
 
 jobs:
   release:
-    if: false # Remove when ready to release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
