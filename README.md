@@ -22,7 +22,9 @@ convenient way to modify the `TracerProviderOptions` (to tell it to use our
 generator/propagator) as part of initialization. You basically have to
 re-implement the internals of `initializeTracerProvider` to do so.
 
-This has been encapsulated in a module of this library for convenience:
+While we plan to open a PR upstream to address the lack of API here, the
+workaround approach has at least been been encapsulated in a module of this
+library for convenience:
 
 ```hs
 import OpenTelemetry.AWSXRay
