@@ -1,37 +1,57 @@
-# haskell-library-template
+# AWS X-Ray Support for hs-opentelemetry
 
-Haskell library template used at Freckle.
+<!-- TODO
+[![Hackage](https://img.shields.io/hackage/v/hs-opentelemetry-awsxray.svg?style=flat)](https://hackage.haskell.org/package/hs-opentelemetry-awsxray)
+[![Stackage Nightly](http://stackage.org/package/hs-opentelemetry-awsxray/badge/nightly)](http://stackage.org/nightly/package/hs-opentelemetry-awsxray)
+[![Stackage LTS](http://stackage.org/package/hs-opentelemetry-awsxray/badge/lts)](http://stackage.org/lts/package/hs-opentelemetry-awsxray)
+-->
 
-## Create your repo
+[![CI](https://github.com/freckle/hs-opentelemetry-awsxray/actions/workflows/ci.yml/badge.svg)](https://github.com/freckle/hs-opentelemetry-awsxray/actions/workflows/ci.yml)
 
-```sh
-gh repo create --template freckle/haskell-library-template --public freckle/<name>
+An `IdGenerator` and `Propagator` for [`hs-opentelemetry-sdk`][sdk] that
+generates and propagates `TraceId` and `SpanId` values that are [compatible with
+AWS X-Ray][xray].
+
+[sdk]: https://hackage.haskell.org/package/hs-opentelemetry-sdk
+[xray]: https://docs.aws.amazon.com/xray/latest/devguide/xray-api-sendingdata.html#xray-api-traceids
+
+## Usage
+
+The API currently exposed by the `hs-opentelemetry-sdk` package lacks a
+convenient way to modify the `TracerProviderOptions` (to tell it to use our
+generator/propagator) as part of initialization. You basically have to
+re-implement the internals of `initializeTracerProvider` to do so.
+
+While we plan to open a PR upstream to address the lack of API here, the
+workaround approach has at least been been encapsulated in a module of this
+library for convenience:
+
+```hs
+import OpenTelemetry.AWSXRay
+import OpenTelemetry.Trace
+import OpenTelemetry.Trace.Setup
+import OpenTelemetry.Trace.Setup.Lens
+
+main :: IO ()
+main = do
+  withTracerProvider modifyTracerProviderOptions $ \tracerProvider -> do
+    let tracer = makeTracer tracerProvider "my-app" tracerOptions
+
+    -- do something with tracer
+
+modifyTracerProviderOptions :: TracerProviderOptions -> TracerProviderOptions
+modifyTracerProviderOptions =
+  idGeneratorL .~ awsXRayIdGenerator
+    . propagatorL <>~ awsXRayContextPropagator
 ```
 
-## Rename your package
+This example uses lens, but you certainly don't have to.
 
-```sh
-sed -i s/haskell-library-template/my-name/ ./**/*
-```
+## Additional References
 
-## Enable release
-
-When you are ready to release your library, simply remove the conditional from
-the release workflow.
-
-```diff
--      - if: false # Remove when ready to release
-```
-
-## Open repo up to [hacktoberfest][hacktoberfest] contributions
-
-Add the `hacktoberfest` topic to your repo if
-
-- you're planning on releasing it as open source, and
-- you think it would benefit from and be amenable to public contributions
+- https://docs.aws.amazon.com/xray/latest/devguide/xray-services-adot.html
+- https://aws.amazon.com/blogs/opensource/migrating-x-ray-tracing-to-aws-distro-for-opentelemetry/
 
 ---
 
 [CHANGELOG](./CHANGELOG.md) | [LICENSE](./LICENSE)
-
-hacktoberfest: https://hacktoberfest.digitalocean.com/

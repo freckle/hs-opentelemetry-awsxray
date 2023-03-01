@@ -1,16 +1,16 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 
-name:           haskell-library-template
+name:           hs-opentelemetry-awsxray
 version:        0.0.0.0
 synopsis:       [synopsis]
 description:    Please see README.md
 category:       Utils
-homepage:       https://github.com/freckle/haskell-library-template#readme
-bug-reports:    https://github.com/freckle/haskell-library-template/issues
+homepage:       https://github.com/freckle/hs-opentelemetry-awsxray#readme
+bug-reports:    https://github.com/freckle/hs-opentelemetry-awsxray/issues
 maintainer:     Freckle Education
 license:        MIT
 license-file:   LICENSE
@@ -23,11 +23,18 @@ extra-doc-files:
 
 source-repository head
   type: git
-  location: https://github.com/freckle/haskell-library-template
+  location: https://github.com/freckle/hs-opentelemetry-awsxray
 
 library
+  exposed-modules:
+      OpenTelemetry.AWSXRay.Baggage
+      OpenTelemetry.AWSXRay.IdGenerator
+      OpenTelemetry.AWSXRay.Propagator
+      OpenTelemetry.AWSXRay.TraceInfo
+      OpenTelemetry.Trace.Setup
+      OpenTelemetry.Trace.Setup.Lens
   other-modules:
-      Paths_haskell_library_template
+      Paths_hs_opentelemetry_awsxray
   hs-source-dirs:
       library
   default-extensions:
@@ -58,15 +65,31 @@ library
   ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-unsafe -Wno-safe
   build-depends:
       base <5
+    , bytestring
+    , errors
+    , hs-opentelemetry-api
+    , hs-opentelemetry-sdk
+    , http-types
+    , memory
+    , microlens
+    , random >=1.2.1
+    , text
+    , time
+    , unliftio
+    , unliftio-core
+    , unordered-containers
+  default-language: Haskell2010
+  if impl(ghc >= 9.2)
+    ghc-options: -Wno-missing-kind-signatures
   if impl(ghc >= 8.10)
     ghc-options: -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module
-  default-language: Haskell2010
 
 test-suite spec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_haskell_library_template
+      OpenTelemetry.AWSXRay.TraceInfoSpec
+      Paths_hs_opentelemetry_awsxray
   hs-source-dirs:
       tests
   default-extensions:
@@ -97,7 +120,13 @@ test-suite spec
   ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-unsafe -Wno-safe -threaded -rtsopts "-with-rtsopts=-N"
   build-depends:
       base <5
+    , hs-opentelemetry-api
+    , hs-opentelemetry-awsxray
     , hspec
+    , text
+    , unordered-containers
+  default-language: Haskell2010
+  if impl(ghc >= 9.2)
+    ghc-options: -Wno-missing-kind-signatures
   if impl(ghc >= 8.10)
     ghc-options: -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module
-  default-language: Haskell2010

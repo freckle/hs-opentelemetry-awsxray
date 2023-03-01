@@ -1,1 +1,17 @@
-resolver: lts-19.6
+resolver: lts-20.12
+extra-deps:
+  - hs-opentelemetry-api-0.0.3.6
+  - hs-opentelemetry-sdk-0.0.3.4
+
+  # For hs-opentelemetry-api
+  - thread-utils-context-0.2.0.0
+
+  # For hs-opentelemetry-sdk
+  - hs-opentelemetry-exporter-otlp-0.0.1.4
+  - hs-opentelemetry-propagator-w3c-0.0.1.2
+
+  # For hs-opentelementry-exporter-otlp
+  - hs-opentelemetry-otlp-0.0.1.0
+
+  # For thread-utils-context
+  - thread-utils-finalizers-0.1.0.0

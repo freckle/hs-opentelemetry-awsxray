@@ -1,9 +1,8 @@
----
-name: haskell-library-template
+name: hs-opentelemetry-awsxray
 version: 0.0.0.0
 maintainer: Freckle Education
 category: Utils
-github: freckle/haskell-library-template
+github: freckle/hs-opentelemetry-awsxray
 synopsis: "[synopsis]"
 description: Please see README.md
 
@@ -24,6 +23,9 @@ ghc-options:
   - -Wno-safe
 
 when:
+  - condition: "impl(ghc >= 9.2)"
+    ghc-options:
+      - -Wno-missing-kind-signatures
   - condition: "impl(ghc >= 8.10)"
     ghc-options:
       - -Wno-missing-safe-haskell-mode
@@ -60,6 +62,20 @@ default-extensions:
 
 library:
   source-dirs: library
+  dependencies:
+    - bytestring
+    - errors
+    - hs-opentelemetry-api
+    - hs-opentelemetry-sdk
+    - http-types
+    - memory
+    - microlens
+    - random >= 1.2.1 # globalStdGen
+    - text
+    - time
+    - unliftio
+    - unliftio-core
+    - unordered-containers
 
 tests:
   spec:
@@ -67,5 +83,8 @@ tests:
     source-dirs: tests
     ghc-options: -threaded -rtsopts "-with-rtsopts=-N"
     dependencies:
-      #- haskell-library-template
+      - hs-opentelemetry-api
+      - hs-opentelemetry-awsxray
       - hspec
+      - text
+      - unordered-containers
