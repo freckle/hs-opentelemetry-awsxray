@@ -5,7 +5,7 @@ cabal-version: 1.18
 -- see: https://github.com/sol/hpack
 
 name:           hs-opentelemetry-awsxray
-version:        0.1.0.0
+version:        0.1.0.1
 synopsis:       [synopsis]
 description:    Please see README.md
 category:       Utils
