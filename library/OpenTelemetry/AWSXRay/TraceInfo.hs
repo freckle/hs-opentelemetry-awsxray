@@ -51,9 +51,9 @@ fromXRayHeader bs = do
   root <- note "Root not present" $ lookup "Root" kv
   traceId <- case bsSplitOn '-' root of
     ["1", epoch, unique] -> do
-      -- epoch can be "at most" 8 hex and we should zero-pad the
-      -- short values. NB. This relies on hex being 1 char per char
       let
+        -- AWS may trim leading zeros from epoch; we must put them back for it
+        -- to be valid for OTel
         epochUnique = bsLeftPad 8 '0' epoch <> unique
         errorPrefix =
           "Root epoch+unique ("
